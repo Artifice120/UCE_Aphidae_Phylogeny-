@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH -J test-RAXML
+#SBATCH --account ACF-UTK0011
+#SBATCH --mem=100gb
+#SBATCH --nodes=1
+#SBATCH --ntasks=48
+#SBATCH --time=24:00:00
+#SBATCH --partition=campus-bigmem
+#SBATCH --error=error/raxml-test.e%j
+#SBATCH --output=log/raxml-test.o%j
+#SBATCH --qos=campus-bigmem
+#SBATCH --exclusive
+
+module purge
+
+source /lustre/isaac24/scratch/jtorre28/enviro/mamba/micro/etc/profile.d/micromamba.sh
+
+micromamba activate  raxml-ng
+
+cd /lustre/isaac24/scratch/jtorre28/bipaa-probe2/extracts/OrthoFinder/Results_May27_3/MultipleSequenceAlignments/
+
+raxml-ng --all --msa /lustre/isaac24/scratch/jtorre28/bipaa-probe2/extracts/OrthoFinder/Results_May27_3/MultipleSequenceAlignments/SpeciesTreeAlignment.filt.fa --model GTR+G --bs-trees 500 --threads 40 --force perf_threads
