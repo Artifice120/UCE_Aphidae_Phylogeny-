@@ -21,3 +21,5 @@ wget -i  filt-link.curated.list.filt
 NCBI refrence aphid genomes were downloaded in a similar way with a seperate script "NCBI_dowload_aphids"
 
 ### Pyluce UCE locating with hymenoptera-v2 bait set
+
+Phyluce command ```phyluce_probe_run_multiple_lastzs_sqlite``` was used with the bait set ```/lustre/isaac24/scratch/jtorre28/peluche/hymenoptera-v2-PRINCIPAL-bait-set.fasta.txt```
