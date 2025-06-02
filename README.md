@@ -1,6 +1,6 @@
 # UCE_Aphidae_Phylogeny
 
-### Outline 
+## Outline 
 * NCBI and BIPAA genome assembly downloads
 * Pyluce UCE locating with hymenoptera-v2 bait set
 * Pyluce UCE seequence extraction with lastz phyluce results
@@ -18,3 +18,6 @@ The file or filtered links was then downloaded with the command below:
 ```
 wget -i  filt-link.curated.list.filt 
 ```
+NCBI refrence aphid genomes were downloaded in a similar way with a seperate script "NCBI_dowload_aphids"
+
+### Pyluce UCE locating with hymenoptera-v2 bait set
