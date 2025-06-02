@@ -1,0 +1,44 @@
+#!bin/bash/
+
+index=$( cat aphid.list )
+
+array=(
+$index
+        )
+
+echo "LINKS" > filt-link.list
+
+for i in "${array[@]}" ; do
+
+        echo "layer-1 ${i}"
+        iii=$(lynx -dump -listonly -nonumbers https://bipaa.genouest.org/sp/${i}/download/${i}/ | grep -i -E 'genome|fasta|assemb')
+        if [[ $iii == "" ]] ; then
+                iii=$(lynx -dump -listonly -nonumbers https://bipaa.genouest.org/sp/${i}/download/ | grep -i -E 'genome|fasta|assemb')
+                if [[ $iii == "" ]] ; then
+                        echo "${i} is BLANK"
+fi
+fi
+
+        ii=(${iii})
+        grep '\.f.*a' <<< ${iii} >> filt-link.list
+
+                for e in "${ii[@]}" ; do
+                        echo "layer-2 ${e}"
+                        eee=$( lynx -dump -listonly -nonumbers ${e} )
+                        ee=(${eee})
+                        grep '\.f.*a' <<< ${eee} >> filt-link.list
+                                for u in "${ee[@]}" ; do
+                                        echo "layer-3 ${u}"
+                                        uuu=$( lynx -dump -listonly -nonumbers ${u} )
+                                        uu=(${uuu})
+                                        grep '\.f.*a' <<< ${uuu} >> filt-link.list
+                                                for y in "${uu}" ; do
+                                                        echo "layer-4 ${y}"
+                                                        yyy=$( lynx -dump -listonly -nonumbers ${y} )
+                                                        yy=( ${yyy} )
+                                                        echo "layer-5 ${yy}"
+                                                        grep '\.f.*a' <<< ${yyy} >> filt-link.list
+                                                done
+                                done
+                done
+done
