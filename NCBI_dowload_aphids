@@ -1,0 +1,38 @@
+#!bin/bash/
+
+acc=$( cat acc.list )
+
+beep=(
+$acc
+)
+
+rm index.html
+
+echo "" links.tmp
+
+for sheep in "${beep[@]}"; do
+        wget https://www.ncbi.nlm.nih.gov/datasets/genome/${sheep}/
+        mv index.html ${sheep}.base.html
+        title=$(grep pageData.title ${sheep}.base.html | awk -F '\=' '{ print $2 }' | sed 's/"//g' | sed 's/;//g' | sed 's/^ //g' | sed 's/ $//g' | sed 's/ /_/g' )
+        prefix=$( awk -F '_' '{ print $1 }' <<< $sheep )
+        int=$( awk -F '_' '{ print $2 }' <<< $sheep )
+        wr1=$(fold -w 3 <<< $int | head -n 1)
+        wr2=$(fold -w 3 <<< $int | head -n 2 | tail -n 1 )
+        wr3=$(fold -w 3 <<< $int | head -n 3 | tail -n 1 )
+        echo -e "${title}\n${wr1}\n${wr2}\n${wr3}"
+        ex=$(lynx -dump https://ftp.ncbi.nlm.nih.gov/genomes/all/${prefix}/${wr1}/${wr2}/${wr3}/ | grep "2\. http" | awk '{print $2}')
+        lynx -dump $ex | grep -i "http.*.genomic.fna*"  | awk '{ print $2 }' >> links.tmp
+        bug=$( lynx -dump $ex | grep -i "http.*.genomic.fna*"  | awk '{ print $2 }' )
+        echo -e "Crawling NCBI\n${bug}"
+
+done
+
+paths=$( cat links.tmp )
+
+array=(
+$paths
+)
+
+for i in "${array[@]}"; do
+        wget $i
+done
