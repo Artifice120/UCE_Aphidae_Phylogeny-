@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH -J Ortho
+#SBATCH --account ACF-UTK0011
+#SBATCH --mem=120gb
+#SBATCH --nodes=1
+#SBATCH --ntasks=48
+#SBATCH --time=03:00:00
+#SBATCH --partition=short
+#SBATCH --error=error/ortho.e%j
+#SBATCH --output=log/ortho.o%j
+#SBATCH --qos=short
+#SBATCH --exclusive
+
+
+source /lustre/isaac24/scratch/jtorre28/enviro/mamba/micro/etc/profile.d/micromamba.sh
+
+micromamba activate ortho-finder
+
+cd /lustre/isaac24/scratch/jtorre28/aphidseq/bipa-ncbi-extracts
+
+orthofinder -d -f /lustre/isaac24/scratch/jtorre28/aphidseq/bipa-ncbi-extracts -t 48
