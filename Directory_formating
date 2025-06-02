@@ -1,0 +1,38 @@
+#!bin/bash/
+
+# moves files into a the directory structure required by the Phyluce pipeline
+
+index=$( cat filt-link.curated.list.filt )
+
+cheshire=(
+$index
+)
+
+mkdir /lustre/isaac24/scratch/jtorre28/bipaa-probe2
+
+for w in "${cheshire[@]}" ; do
+        # fix naming ettiquette
+        r=$(awk -F '/' '{ print $NF }' <<< ${w})
+        fix=$( sed "s/\.f/@/g" <<< ${r} | awk -F '/' '{ print $NF }' | sed "s/\./_/g" | sed "s/@/\.f/g" )
+
+        if [[ ${r} == ${fix} ]] ; then
+                cp ${r} ${r}.backup
+        else
+                cp $r ${fix}
+        fi
+
+        echo "start: $r --- fixed: $fix"
+
+        #extract prefix
+
+        prefix=$( awk -F '.' '{print $1}' <<< $fix  )
+
+        echo "${prefix}"
+
+        #Dir structuring
+        mkdir /lustre/isaac24/scratch/jtorre28/bipaa-probe2/${prefix}
+        mv ${fix} /lustre/isaac24/scratch/jtorre28/bipaa-probe2/${prefix}
+        cd /lustre/isaac24/scratch/jtorre28/bipaa-probe2/${prefix}
+        singularity exec /lustre/isaac24/scratch/jtorre28/singularity_containers/fato2bit-quick.sif faToTwoBit ${fix} ${prefix}.2bit
+        cd /lustre/isaac24/scratch/jtorre28/bipaa2
+done
