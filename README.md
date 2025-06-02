@@ -10,6 +10,11 @@
 
 ### NCBI and BIPAA genome assembly downloads
 
-BIPAA genomes were obtained by runnin the scip 
+BIPAA genomes were obtained by runnin the script Get_BIPAA_links which would use the base layer of each species on the download portion on the website and search up to three layers deep for fasta genome assemblies
 
-wegt -i 
+The list of returned links were then manually filtered to ensure only the newest version of each genotype was used.
+
+The file or filtered links was then downloaded with the command below:
+```
+wget -i  filt-link.curated.list.filt 
+```
